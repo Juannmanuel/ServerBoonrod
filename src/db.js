@@ -3,18 +3,7 @@ const { Sequelize } = require("sequelize");
 
 const fs = require('fs');
 const path = require('path');
-// const {
-//   DB_USER, DB_PASSWORD, DB_HOST,
-// } = process.env;
 
-// // const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
-// //   logging: false,
-// //   native: false,
-// // });
-// const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
-//   logging: false,
-//   native: false,
-// });
 const {
   DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT
 } = process.env;
@@ -22,6 +11,15 @@ const {
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
   logging: false, 
 });
+
+// Prueba de conexión
+sequelize.authenticate()
+  .then(() => {
+    console.log('La conexión a la base de datos fue exitosa.');
+  })
+  .catch(err => {
+    console.error('No se pudo conectar a la base de datos:', err);
+  });
 
 const basename = path.basename(__filename);
 
@@ -32,7 +30,6 @@ fs.readdirSync(path.join(__dirname, '/models'))
   .forEach((file) => {
     modelDefiners.push(require(path.join(__dirname, '/models', file)));
   });
-
 
 modelDefiners.forEach(model => model(sequelize));
 
@@ -47,6 +44,6 @@ Sections.belongsToMany(Products, { through: 'SectionsProducts', timestamps: fals
 Products.belongsToMany(Sections, { through: 'SectionsProducts', timestamps: false });
 
 module.exports = {
-  ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-  conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
+  ...sequelize.models,
+  conn: sequelize,
 };
