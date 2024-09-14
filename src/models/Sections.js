@@ -5,7 +5,7 @@ const { DataTypes } = require('sequelize');
 //Exporta una función que define el modelo Section y recibe como argumento la instancia sequelize de la conexión a la base de datos
 module.exports = (sequelize) => {
     // defino el modelo
-    sequelize.define('Section', {
+    sequelize.define('Sections', {
         ID: {
             type: DataTypes.UUID,
             primaryKey: true,
