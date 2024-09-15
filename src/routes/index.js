@@ -4,10 +4,10 @@ const routerSections = require("./RouterSections");  // Importa el enrutador par
 const router = Router();  // Crea una instancia de Router para las rutas principales.
 
 // Usa el enrutador de países en la ruta "/countries".
-router.use("/countries", routerSections);
+router.use("/sections", routerSections);
 
 // Usa el enrutador de actividades en la ruta "/Products".
-router.use("/Products", routerProducts);
+router.use("/products", routerProducts);
 
 module.exports = router;  
 

@@ -1,30 +1,26 @@
-const { Router } = require("express")
-// const { getAllActivities, postActivity, deleteActivity, updateActivity, getActivityById } = require("../Controllers/controllersActivities")
-const routerProducts = Router()
+const { Router } = require("express");
+const { getAllProducts, getProductById, getProductsBySection, postProduct, updateProduct, deleteProduct, searchProducts } = require("../Controllers/controllersProducts"); // Asegúrate de que la ruta sea correcta
+const routerProducts = Router();
 
-// Configura una ruta para obtener todas las actividades.
-routerProducts.get("/", (req, res) => {
-    res.send("Ruta get")
-});
+// Configura una ruta para obtener todos los productos.
+routerProducts.get("/", getAllProducts); // Usa el controlador getAllProducts
 
-// Configura una ruta para crear una nueva actividad.
-routerProducts.post("/", (req, res) => {
-    res.send("Ruta get")
-});
+// Configura una ruta para crear un nuevo producto.
+routerProducts.post("/", postProduct); // Usa el controlador postProduct
 
-// Configura una ruta para eliminar una actividad por su ID.
-routerProducts.delete("/:id", (req, res) => {
-    res.send("Ruta get")
-});
+// Configura una ruta para eliminar un producto por su ID.
+routerProducts.delete("/:id", deleteProduct); // Usa el controlador deleteProduct
 
-// Configura una ruta para actualizar una actividad por su ID.
-routerProducts.put("/:id", (req, res) => {
-    res.send("Ruta get")
-});
+// Configura una ruta para actualizar un producto por su ID.
+routerProducts.put("/:id", updateProduct); // Usa el controlador updateProduct
 
-// Configura una ruta para obtener una actividad por su ID.
-routerProducts.get("/:id", (req, res) => {
-    res.send("Ruta get")
-});
+// Configura una ruta para obtener un producto por su ID.
+routerProducts.get("/:id", getProductById); // Usa el controlador getProductById
+
+// Configura una ruta para obtener todos los productos de una sección específica.
+routerProducts.get("/section/:sectionId", getProductsBySection); // Usa el controlador getProductsBySection
+
+// Configura una ruta para buscar productos.
+routerProducts.get("/search", searchProducts); // Usa el controlador searchProducts
 
 module.exports = routerProducts;
