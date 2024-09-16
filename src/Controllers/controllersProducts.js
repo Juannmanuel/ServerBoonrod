@@ -34,7 +34,7 @@ const postProduct = async (req, res) => {
     try {
         // Verifica si los datos obligatorios están presentes
         if (!name || !type || !price || !sizes || inStock === undefined || !images) {
-            throw Error("Faltan datos obligatorios");
+            throw Error(`${"Faltan datos obligatorios", name, type, price, sizes, inStock, images }`);
         }
 
         // Crea el producto en la base de datos
