@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
     // Defino el modelo
-    sequelize.define('Products', { 
+    sequelize.define('Products', {
         id: {
             type: DataTypes.UUID, // UUID para asegurar unicidad
             primaryKey: true,
@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false // Nombre del producto, obligatorio
         },
-        type: {
+        categoryProduct: {
             type: DataTypes.STRING,
             allowNull: false // Tipo de producto, ej. "Accesorios"
         },
@@ -32,21 +32,37 @@ module.exports = (sequelize) => {
             defaultValue: true // Valor predeterminado si no se especifica
         },
         discount: {
-            type: DataTypes.JSON, // Estructura JSON para el descuento
-            allowNull: true // No siempre habrá descuento
+            type: DataTypes.BOOLEAN, // Estructura JSON para el descuento
+            defaultValue: false,
+            allowNull: true
+
         },
         categories: {
-            type: DataTypes.ARRAY(DataTypes.STRING), // Array de categorías, ej. "Hot Sale"
-            allowNull: false
+            type: DataTypes.ARRAY(DataTypes.STRING),
+            allowNull: true,
+            validate: {
+                isArrayLengthCorrect(value) {
+                    if (value.length >= 6) {
+                        throw new Error('El array debe tener exactamente 4 elementos');
+                    }
+                }
+            },
+            noDuplicates(value) {
+                const uniqueValues = new Set(value);
+                if (uniqueValues.size !== value.length) {
+                    throw new Error('El array no debe contener valores duplicados');
+                }
+            }
+
+
         },
         images: {
             type: DataTypes.JSON, // Almacenamos las imágenes como un JSON estructurado
             allowNull: false
         },
-        isSoldOut: {
-            type: DataTypes.BOOLEAN, // Indica si está agotado
-            allowNull: false,
-            defaultValue: false // Por defecto, no está agotado
+        discountPercentage: {
+            type: DataTypes.NUMBER,
+            allowNull: true,
         },
         description: {
             type: DataTypes.TEXT, // Descripción del producto

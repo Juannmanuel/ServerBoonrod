@@ -18,9 +18,9 @@ routerSections.put("/:id", updateSection); // Usa el controlador updateSection
 routerSections.delete("/:id", deleteSection); // Usa el controlador deleteSection
 
 // Configura una ruta para asignar productos a una sección.
-routerSections.post("/:id/assign-products", assignProductsToSection); // Usa el controlador assignProductsToSection
+routerSections.post("/assign-products", assignProductsToSection); // Usa el controlador assignProductsToSection
 
 // Configura una ruta para remover productos de una sección.
-routerSections.delete("/:id/remove-products", removeProductsFromSection); // Usa el controlador removeProductsFromSection
+routerSections.delete("/remove-products", removeProductsFromSection); // Usa el controlador removeProductsFromSection
 
 module.exports = routerSections;

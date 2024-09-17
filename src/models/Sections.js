@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
       allowNull: false,
       primaryKey: true
     },
-    section: {
+    sectionName: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true // Aseguramos que la sección no se repita
@@ -20,21 +20,17 @@ module.exports = (sequelize) => {
       allowNull: true,
       defaultValue: "Explorar" // Valor estático si no se proporciona
     },
-    image1: {
-      type: DataTypes.STRING,
-      allowNull: false // Primera imagen, obligatoria
-    },
-    image2: {
-      type: DataTypes.STRING,
-      allowNull: false // Segunda imagen, obligatoria
-    },
-    image3: {
-      type: DataTypes.STRING,
-      allowNull: false // Tercera imagen, obligatoria
-    },
-    image4: {
-      type: DataTypes.STRING,
-      allowNull: false // Cuarta imagen, obligatoria
+    images: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: false,
+      validate: {
+        // Validación personalizada para el tamaño exacto del array
+        validArraySize(value) {
+          if (value.length !== 4) {
+            throw new Error('El array debe tener exactamente 4 elementos');
+          }
+        }
+      }
     },
     title: {
       type: DataTypes.STRING,

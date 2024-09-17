@@ -1,4 +1,5 @@
 const { Products, Sections } = require("../db");
+const { Op } = require("sequelize");
 
 const getAllSections = async (req, res) => {
     try {
@@ -25,12 +26,14 @@ const getSectionById = async (req, res) => {
 
 
 const postSection = async (req, res) => {
-    const { name, description } = req.body;  // Obtiene los datos de la nueva sección desde el cuerpo de la solicitud.
-    try {
-        if (!name) throw Error("Nombre de la sección es obligatorio");
+    const { sectionName, description, images, title } = req.body;  // Obtiene los datos de la nueva sección desde el cuerpo de la solicitud.
+    console.log(sectionName, description, images, title);
 
-        const newSection = await Sections.create({ name, description });  // Crea una nueva sección.
-        return res.status(201).json({ message: "Sección creada correctamente", section: newSection });
+    try {
+        if (!sectionName, !description, !images, !title) throw Error("Faltan datos");
+
+        const newSection = await Sections.create({ sectionName, description, images, title });  // Crea una nueva sección.
+        return res.status(201).json({ message: "Sección creada correctamente", sectionName: newSection });
     } catch (error) {
         return res.status(400).json({ error: error.message });
     }
@@ -38,10 +41,10 @@ const postSection = async (req, res) => {
 
 const updateSection = async (req, res) => {
     const { id } = req.params;  // Obtiene el ID de la sección desde los parámetros de la solicitud.
-    const { name, description } = req.body;  // Obtiene los datos actualizados de la sección desde el cuerpo de la solicitud.
+    const { sectionName, buttonText, images, title, description } = req.body;  // Obtiene los datos actualizados de la sección desde el cuerpo de la solicitud.
     try {
         const [updated] = await Sections.update(
-            { name, description },
+            { sectionName, buttonText, images, title, description },
             { where: { id } }
         );
 
@@ -69,10 +72,23 @@ const deleteSection = async (req, res) => {
 const assignProductsToSection = async (req, res) => {
     const { sectionId, productIds } = req.body;  // Obtiene el ID de la sección y los IDs de los productos desde el cuerpo de la solicitud.
     try {
+        // Encuentra la sección por su ID
         const section = await Sections.findByPk(sectionId);
         if (!section) throw Error("Sección no encontrada");
 
-        await section.setProducts(productIds);  // Asocia los productos con la sección.
+        // Encuentra los productos por sus IDs
+        const products = await Products.findAll({
+            where: {
+                id: {
+                    [Op.in]: productIds
+                }
+            }
+        });
+
+        if (products.length !== productIds.length) throw Error("Uno o más productos no se encontraron");
+
+        // Asocia los productos con la sección
+        await section.setProducts(products);
         return res.status(200).json({ message: "Productos asignados a la sección correctamente" });
     } catch (error) {
         return res.status(400).json({ error: error.message });
@@ -93,11 +109,11 @@ const removeProductsFromSection = async (req, res) => {
 
 
 module.exports = {
-getAllSections,
-getSectionById,
-postSection,
-updateSection,
-deleteSection,
-assignProductsToSection,
-removeProductsFromSection
+    getAllSections,
+    getSectionById,
+    postSection,
+    updateSection,
+    deleteSection,
+    assignProductsToSection,
+    removeProductsFromSection
 };

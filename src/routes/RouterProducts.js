@@ -21,6 +21,11 @@ routerProducts.get("/:id", getProductById); // Usa el controlador getProductById
 routerProducts.get("/section/:sectionId", getProductsBySection); // Usa el controlador getProductsBySection
 
 // Configura una ruta para buscar productos.
-routerProducts.get("/search", searchProducts); // Usa el controlador searchProducts
+routerProducts.post("/search", searchProducts);
+
+// routerProducts.get('/search/:text', (req, res) => {
+//     console.log(req.query); // Imprime todo el cuerpo de la solicitud
+//     res.send('Cuerpo recibido')
+// });
 
 module.exports = routerProducts;
