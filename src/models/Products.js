@@ -61,7 +61,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         discountPercentage: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.DECIMAL(10, 2),
             allowNull: true,
         },
         description: {
